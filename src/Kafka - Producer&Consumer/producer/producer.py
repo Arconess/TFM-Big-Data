@@ -7,6 +7,7 @@ import pyautogui
 import numpy as np
 import json
 import cv2
+import matplotlib.pyplot as plt
 
 class Producer:
     def __init__(self, topic, freq):
@@ -17,14 +18,11 @@ class Producer:
 
     def start_write(self):
         for value in ['1']:
-            img = pyautogui.screenshot(region=(0,0,20,30)) #region=(0,0,20,30)
-            img = np.array(img)
-            cv2.resize(img, (5,2), interpolation=cv2.INTER_CUBIC)#198,96
+            img = pyautogui.screenshot()
+            img = cv2.resize(np.array(img), (320,200), interpolation=cv2.INTER_CUBIC)#198,96 
 
-            d = {"image": [np.asarray(img).tolist()]}#[np.asarray(img).tolist()]}
-            #msg = dict(pd.DataFrame(data=d).iloc[0])
+            d = {"image": [img.tolist()]}
 
-            #self.producer.send(self.topic, value={"image": "msg test", "test": "testing"})
             self.producer.send(self.topic, value=d)
 
             print("Enviados")

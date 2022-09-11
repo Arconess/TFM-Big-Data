@@ -4,12 +4,12 @@
 from kafka import KafkaConsumer
 import json
 import numpy as np
+import cv2
 
 
 class Consumer:
     def __init__(self, topic):
-        #self._consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', value_deserializer=lambda x: x.decode('utf-8'), group_id='tfm')
-        self._consumer = KafkaConsumer(topic, bootstrap_servers='localhost:9092', value_deserializer=lambda x: json.loads(x.decode('utf-8')), group_id='tfm')
+        self._consumer = KafkaConsumer(topic, bootstrap_servers='192.168.1.147:9092', value_deserializer=lambda x: json.loads(x.decode('utf-8')), group_id='tfm')
 
     @property
     def consumer(self):
@@ -28,6 +28,13 @@ class Consumer:
         for message in self._consumer:
             message = message.value
             print(f'Message {message_count}: {np.array(message["image"]).shape}')
+            print(f'Message {message_count}: {np.array(message["image"])[0].shape}')
+
+            b,g,r = cv2.split(np.array(message["image"])[0])
+            img = cv2.merge([r,g,b])
+
+            
+            cv2.imwrite("./test.png",img)
             message_count += 1
 
 
