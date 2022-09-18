@@ -14,12 +14,12 @@ class Producer:
         self.topic = topic
         self.freq = freq if isinstance(freq, int) else int(freq)
         #self.producer = KafkaProducer(bootstrap_servers='localhost:9092', value_serializer=lambda x: x.encode('utf-8'))
-        self.producer = KafkaProducer(bootstrap_servers='192.168.1.147:9092', value_serializer=lambda x: json.dumps(x).encode('utf-8'))
+        self.producer = KafkaProducer(bootstrap_servers='172.20.10.7:9092', value_serializer=lambda x: json.dumps(x).encode('utf-8'))
 
     def start_write(self):
-        for value in ['1']:
+        for value in ['1','1','1','1','1','1']:
             img = pyautogui.screenshot()
-            img = cv2.resize(np.array(img), (320,200), interpolation=cv2.INTER_CUBIC)#198,96 
+            img = cv2.resize(np.array(img), (200,112), interpolation=cv2.INTER_CUBIC)#198,96 MAX: (320,200)
 
             d = {"image": [img.tolist()]}
 
